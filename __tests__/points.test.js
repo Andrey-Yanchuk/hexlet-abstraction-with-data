@@ -1,7 +1,6 @@
 // __tests__/points.test.js
 import { calculateDistance } from "../src/index.js";
 /*-----------------------------------------------------*/
-/*-----------------------------------------------------*/
 describe("Calculate distance between points", () => {
     test("Calculates distance correctly", () => {
         const point1 = [0, 0];
