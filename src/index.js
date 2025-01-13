@@ -92,3 +92,34 @@ export const getMidpointOfSegment = (segment) => {
 export const getBeginPoint = (segment) => segment.beginPoint;
 export const getEndPoint = (segment) => segment.endPoint;
 /*-----------------------------------------------------*/
+export const makeRectangle = (point, width = 1, height = 1) => {
+  if (width <= 0 || height <= 0)
+    throw new Error("Width and height must be greater than 0!");
+  return { point, width, height };
+};
+export const getStartPoint = (rectangle) => {
+  if (typeof rectangle.point !== "object")
+    throw new Error(
+      "Invalid rectangle format: point must be an object with properties x and y!",
+    );
+  if (Object.keys(rectangle.point).length !== 2)
+    throw new Error("The object must contain two properties x and y!");
+  return rectangle.point;
+};
+export const getWidth = (rectangle) => rectangle.width;
+export const getHeight = (rectangle) => rectangle.height;
+export const containsOrigin = (rectangle) => {
+  const { x: x1, y: y1 } = getStartPoint(rectangle);
+  const x2 = x1 + getWidth(rectangle);
+  const y2 = y1 - getHeight(rectangle);
+  return x1 < 0 && 0 < x2 && y1 > 0 && 0 > y2;
+  // Зная координаты двух противоположных углов прямоугольника(левая верхняя точка и правая нижняя точка), можно проверить, лежит ли центр координат (0, 0) внутри этого прямоугольника.
+  /*
+  (x1, y1)*----------------------
+          |                     | 
+          |                     | 
+          |                     | 
+          |                     | 
+          |                     | 
+          ----------------------* (x2, y2)*/
+};
