@@ -37,9 +37,30 @@ export const getMidpoint = (point1, point2) => {
   return { x, y };
 };
 /*-----------------------------------------------------*/
-export const makeDecartPoint = (x, y) => ({ x, y });
-// const beginPoint = makeDecartPoint(3, 2);
-// const endPoint = makeDecartPoint(0, 0);
+// export const makeDecartPoint = (x, y) => ({ x, y });
+export const makePolarPoint = (x, y) => {
+  // return {x, y} // Переписыываем декартовую систему координат на полярную
+  const isValidCoordinate = (x, y) =>
+    typeof x === "number" && typeof y === "number" && !isNaN(x) && !isNaN(y);
+  if (!isValidCoordinate(x, y)) throw new Error("Coordinates must be numbers!");
+  return {
+    angle: Math.atan2(y, x),
+    radius: Math.sqrt(x ** 2 + y ** 2),
+  };
+};
+export const getX = (point) => {
+  const x = point.radius * Math.cos(point.angle);
+  return Math.round(x);
+};
+export const getY = (point) => {
+  const y = point.radius * Math.sin(point.angle);
+  return Math.round(y);
+};
+export const convertPolarToDecart = (point) => {
+  const x = getX(point);
+  const y = getY(point);
+  return { x, y };
+};
 export const makeSegment = (beginPoint, endPoint) => {
   if (
     typeof beginPoint !== "object" ||
@@ -55,10 +76,6 @@ export const makeSegment = (beginPoint, endPoint) => {
     Object.keys(endPoint).length !== 2
   )
     throw new Error("Each point must have exactly two coordinates.");
-  const isValidCoordinate = (point) =>
-    typeof point.x === "number" && typeof point.y === "number";
-  if (!isValidCoordinate(beginPoint) || !isValidCoordinate(endPoint))
-    throw new Error("Coordinates must be numbers!");
   const calculateDistance = () =>
     Math.sqrt(
       Math.pow(beginPoint.x - endPoint.x, 2) +
@@ -74,3 +91,4 @@ export const getMidpointOfSegment = (segment) => {
 };
 export const getBeginPoint = (segment) => segment.beginPoint;
 export const getEndPoint = (segment) => segment.endPoint;
+/*-----------------------------------------------------*/
