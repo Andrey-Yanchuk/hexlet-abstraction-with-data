@@ -79,7 +79,7 @@ export const makeSegment = (beginPoint, endPoint) => {
   const calculateDistance = () =>
     Math.sqrt(
       Math.pow(beginPoint.x - endPoint.x, 2) +
-        Math.pow(beginPoint.y - endPoint.y, 2),
+      Math.pow(beginPoint.y - endPoint.y, 2),
     );
   return { beginPoint, endPoint, calculateDistance };
 };
@@ -123,3 +123,39 @@ export const containsOrigin = (rectangle) => {
           |                     | 
           ----------------------* (x2, y2)*/
 };
+/*-----------------------------------------------------*/
+export const makeRational = (numer, denom) => {
+  if (typeof numer !== "number" || typeof denom !== "number") throw new Error("Both numerator and denominator must be numbers!");
+  if (denom === 0) throw new Error("Denominator cannot be zero!");
+  const gcd = getGsd(numer, denom);
+  return {
+    numer: numer / gcd,
+    denom: denom / gcd,
+  };
+};
+const getGsd = (a, b) => { // НОД
+  while (b !== 0) {
+    // [a, b] = [b, a % b] // С деструктуризацией
+    const temp = a; // Без деструктуризации
+    a = b;
+    b = temp % b;
+  }
+  return Math.abs(a);
+};
+export const getNumer = (rational) => rational.numer;
+export const getDenom = (rational) => rational.denom;
+export const add = (rational1, rational2) => {
+  // Сложение: numer=numer1×denom2+numer2×denom1, denom=denom1×denom2
+  return {
+    numer: getNumer(rational1) * getDenom(rational2) + getNumer(rational2) * getDenom(rational1),
+    denom: getDenom(rational1) * getDenom(rational2),
+  };
+};
+export const sub = (rational1, rational2) => {
+  // Вычитание: numer=numer1×denom2−numer2×denom1, denom=denom1×denom2
+  return {
+    numer: getNumer(rational1) * getDenom(rational2) - getNumer(rational2) * getDenom(rational1),
+    denom: getDenom(rational1) * getDenom(rational2),
+  }
+}
+export const ratToString = (rational) => `${rational.numer}/${rational.denom}`;
